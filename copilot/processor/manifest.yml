@@ -10,6 +10,7 @@ type: Worker Service
 image:
   # Docker build arguments.
   build: src/orderprocessor/Dockerfile
+  context: .
 
 cpu: 256       # Number of CPU units for the task.
 memory: 512    # Amount of memory in MiB used by the task.
