@@ -9,8 +9,8 @@ type: Worker Service
 # Configuration for your containers and service.
 image:
   # Docker build arguments.
-  build: src/orderprocessor/Dockerfile
-  context: src
+  build: ./src/orderprocessor/Dockerfile
+  context: ./src
 
 subscribe:
   topics:
