@@ -47,14 +47,14 @@ public class SQSProcessorWorker : IHostedService
     private async Task DeleteMessageAsync(string recieptHandle)
     {
         DeleteMessageRequest deleteMessageRequest = new DeleteMessageRequest();
-        deleteMessageRequest.QueueUrl =  _options.QueueUrl;
+        deleteMessageRequest.QueueUrl =  _configuration["COPILOT_QUEUE_URI"] ?? _options.QueueUrl;
         deleteMessageRequest.ReceiptHandle = recieptHandle;
         DeleteMessageResponse response = await _sqs.DeleteMessageAsync(deleteMessageRequest);
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        if (_configuration.GetSection("SQS").Exists()) {
+        if (_configuration.GetSection("SQS").Exists() || !string.IsNullOrEmpty(_configuration["COPILOT_QUEUE_URI"])) {
             return Task.Run(async () =>
             {
                 while(!cancellationToken.IsCancellationRequested)
