@@ -4,11 +4,12 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
-COPY ["src/orderprocessor/orderprocessor.csproj", "src/orderprocessor/orderprocessor.csproj"]
-RUN dotnet restore src/orderprocessor/orderprocessor.csproj
+COPY ["orderprocessor/orderprocessor.csproj", "orderprocessor/orderprocessor.csproj"]
+COPY ["infrastructure/infrastructure.csproj", "infrastructure/infrastructure.csproj"]
+RUN dotnet restore orderprocessor/orderprocessor.csproj
 COPY . .
 
-WORKDIR /src/src/orderprocessor
+WORKDIR /src/orderprocessor
 RUN dotnet publish -c Release -o /app/publish
 
 FROM base AS final
