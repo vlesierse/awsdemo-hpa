@@ -1,5 +1,6 @@
 // Create Builder
 using System.Net.Security;
+using System.Text.Json;
 using Amazon.SimpleNotificationService;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.RabbitMQ;
@@ -61,6 +62,13 @@ public static class ServiceCollectionExtensions
         }
         services
             .Configure<SNSTopicOptions>(section)
+            .Configure<SNSTopicOptions>(options => {
+                if (!string.IsNullOrEmpty(configuration["COPILOT_SNS_TOPIC_ARNS"]))
+                {
+                    var topics = JsonSerializer.Deserialize<Dictionary<string, string>>(configuration["COPILOT_SNS_TOPIC_ARNS"]);
+                    options.TopicArn = topics["orders"];
+                }
+            })
             .AddDefaultAWSOptions(configuration.GetAWSOptions())
             .AddAWSService<IAmazonSimpleNotificationService>()
             .AddTransient<ITopic, SNSTopic>();
