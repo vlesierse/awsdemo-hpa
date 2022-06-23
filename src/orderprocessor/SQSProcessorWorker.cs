@@ -27,7 +27,7 @@ public class SQSProcessorWorker : IHostedService
     private async Task FetchFromQueue(CancellationToken cancellationToken)
     {
         ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest();
-        receiveMessageRequest.QueueUrl = _options.QueueUrl;
+        receiveMessageRequest.QueueUrl = _configuration["COPILOT_QUEUE_URI"] ?? _options.QueueUrl;
         receiveMessageRequest.MaxNumberOfMessages = _options.MaxNumberOfMessages;
         receiveMessageRequest.WaitTimeSeconds = _options.MessageWaitTimeSeconds;
         ReceiveMessageResponse receiveMessageResponse = await _sqs.ReceiveMessageAsync(receiveMessageRequest, cancellationToken);
