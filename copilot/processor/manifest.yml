@@ -10,7 +10,7 @@ type: Worker Service
 image:
   # Docker build arguments.
   build: src/orderprocessor/Dockerfile
-  context: .
+  context: src
 
 subscribe:
   topics:
