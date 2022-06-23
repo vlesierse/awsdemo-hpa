@@ -56,7 +56,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddSNS(this IServiceCollection services, IConfiguration configuration)
     {
         var section = configuration.GetSection("SNS");
-        if (!section.Exists())
+        if (!section.Exists() && string.IsNullOrEmpty(configuration["COPILOT_SNS_TOPIC_ARNS"]))
         {
             return services;
         }
